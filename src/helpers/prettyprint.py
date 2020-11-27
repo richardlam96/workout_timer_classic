@@ -1,5 +1,4 @@
-import shutil
-from .formatter import format_heading, format_list, format_time
+from .formatter import *
 
 
 def pprint_heading(text, border_char="*", **kwargs):
@@ -10,6 +9,11 @@ def pprint_heading(text, border_char="*", **kwargs):
 
 def pprint_list(item_list):
     print(format_list(item_list))
+
+
+def pprint_menu_list(item_list, selection=0):
+    formatted_list = format_list(item_list)
+    print(add_selection_indicator(formatted_list, selection))
 
 
 def pprint_time(seconds):

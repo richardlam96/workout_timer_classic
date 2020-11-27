@@ -1,5 +1,6 @@
 import shutil
 from art import text2art
+from termcolor import colored
 
 
 def format_heading(text, **kwargs):
@@ -31,6 +32,13 @@ def format_center(multiline_text, pad_char=' '):
     padding = min([terminal_width - len(item) for item in lines])
     left_pad = (padding // 2) * pad_char
     return list(map(lambda item: left_pad + item, lines))
+
+
+def add_selection_indicator(multiline_text, selection_index):
+    lines = multiline_text.split('\n')
+    selected_line = colored(lines[selection_index], 'red', attrs=['reverse', 'blink'])
+    lines[selection_index] = selected_line
+    return join_to_string(lines)
 
 
 def add_numbering(list_of_string):
