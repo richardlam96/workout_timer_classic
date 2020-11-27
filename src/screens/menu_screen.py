@@ -5,13 +5,14 @@ from .screen import Screen
 class MenuScreen(Screen):
 
     def __init__(self, heading, description, options_list):
+        super().__init__(self, heading, description)
         self.heading = heading
         self.description = description
         self.options_list = options_list
         self.current_selection = 0
 
         self.draw()
-        self.wait_for_input()
+        self.handle_input()
 
     def draw(self):
         self.clear()
@@ -19,7 +20,7 @@ class MenuScreen(Screen):
         print(self.description)
         pprint_menu_list(self.options_list, self.current_selection)
 
-    def wait_for_input(self):
+    def handle_input(self):
         while True:
             key = input()
             if key == 'j':

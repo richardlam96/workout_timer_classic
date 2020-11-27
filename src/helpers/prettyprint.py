@@ -3,7 +3,8 @@ from .formatter import *
 
 def pprint_heading(text, border_char="*", **kwargs):
     pprint_border(border_char)
-    print(format_heading(text, **kwargs))
+    for line in format_heading(text, **kwargs):
+        print(line)
     pprint_border(border_char)
 
 
