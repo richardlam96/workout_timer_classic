@@ -2,12 +2,10 @@ import shutil
 from art import text2art
 
 
-def format_heading(text, char, **kwargs):
-    terminal_width = shutil.get_terminal_size().columns
-    spacer = char * terminal_width
-    heading = text2art(text, "wizard", **kwargs)
+def format_heading(text, **kwargs):
+    heading = text2art(text, **kwargs)
     centered_heading = format_center(heading)
-    return join_to_string([spacer, centered_heading, spacer])
+    return join_to_string(centered_heading)
 
 
 def format_time(seconds):
@@ -19,20 +17,20 @@ def format_time(seconds):
 
 def format_list(item_list):
     numbered_list = add_numbering(item_list)
-    padded_list = format_center(numbered_list)
+    padded_list = format_center(join_to_string(numbered_list))
     return join_to_string(padded_list)
 
 
 def format_center(multiline_text, pad_char=' '):
     """ Centers entire message using padding. """
     # Split text into lines if applicable.
-    multiline_text.splitlines()
+    lines = multiline_text.split('\n')
 
     # Calculate padding to apply.
     terminal_width = shutil.get_terminal_size().columns
-    padding = min(terminal_width - len(str(item)) for item in multiline_text)
+    padding = min([terminal_width - len(item) for item in lines])
     left_pad = (padding // 2) * pad_char
-    return list(map(lambda item: left_pad + str(item), multiline_text))
+    return list(map(lambda item: left_pad + item, lines))
 
 
 def add_numbering(list_of_string):
