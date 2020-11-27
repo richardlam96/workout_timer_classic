@@ -36,7 +36,7 @@ def format_center(multiline_text, pad_char=' '):
 
 def add_selection_indicator(multiline_text, selection_index):
     lines = multiline_text.split('\n')
-    selected_line = colored(lines[selection_index], 'red', attrs=['reverse', 'blink'])
+    selected_line = colored(lines[selection_index], 'cyan', attrs=['reverse', 'blink'])
     lines[selection_index] = selected_line
     return join_to_string(lines)
 
