@@ -1,9 +1,9 @@
-from src.screens.menu_screen import MenuScreen
+from src.engine import Engine
 
 
 def main():
-    workout_list = ["monday", "tuesday", "wednesday"]
-    intro_menu = MenuScreen("Interval Timer!", "My App", workout_list)
+    engine = Engine()
+    engine.start()
 
 
 if __name__ == '__main__':
