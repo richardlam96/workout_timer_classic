@@ -1,3 +1,4 @@
+from config import SEQUENCE_FILES
 from .time_configuration import TimeConfiguration
 from .exercise import Exercise
 from ..helpers.filehelper import read_list
@@ -5,14 +6,15 @@ from ..helpers.filehelper import read_list
 
 class Sequence(object):
 
-    def __init__(self, filepath):
+    def __init__(self, filename):
 
         # Read file data and add as private members for later processing.
-        self._sequence_data = read_list(filepath)
+        self._filepath = SEQUENCE_FILES + filename
+        self._sequence_data = read_list(self._filepath)
         self._config_line = self._sequence_data[0].split()
 
         # Read filepath as name (better way later).
-        self.name = filepath.split('.')[0]
+        self.name = self._filepath.split('.')[0]
 
         # Read first line as the Time Configuration.
         self.mode = self._config_line[0]
