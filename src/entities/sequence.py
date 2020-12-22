@@ -14,13 +14,14 @@ class Sequence(object):
         self._config_line = self._sequence_data[0].split()
 
         # Read filepath as name (better way later).
-        self.name = self._filepath.split('.')[0]
+        self.name = filename.split('.')[0]
 
         # Read first line as the Time Configuration.
         self.mode = self._config_line[0]
         self.time_configuration = TimeConfiguration(work=self._config_line[1],
                                                     rest=self._config_line[2],
-                                                    rounds=self._config_line[3])
+                                                    rounds=self._config_line[3],
+                                                    round_rest=self._config_line[4])
 
         # Read the rest of the file as a list of Exercises.
         self.exercises = [Exercise(exercise, self.time_configuration)

@@ -12,7 +12,6 @@ class MenuScreen(Screen):
         self.current_selection = 0
 
         self.draw()
-        self.handle_input()
 
     def draw(self):
         self.clear()
@@ -20,7 +19,7 @@ class MenuScreen(Screen):
         print(self.description)
         pprint_menu_list(self.options_list, self.current_selection)
 
-    def handle_input(self):
+    def get_selection(self):
         while True:
             key = input()
             if key == 'j':
@@ -31,6 +30,7 @@ class MenuScreen(Screen):
                 self.current_selection -= 1
                 self.current_selection %= len(self.options_list)
                 self.draw()
-            elif key == 'q':
+            elif key == '':
                 break
 
+        return self.options_list[self.current_selection]
