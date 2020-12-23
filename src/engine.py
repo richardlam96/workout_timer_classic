@@ -1,10 +1,11 @@
 import os
 import time
 import simpleaudio as sa
-from config import WORKOUT_FILES, ROUNDS_MODE, SETS_MODE
+from config import *
+from src.entities.workout import Workout
 from src.screens.menu_screen import MenuScreen
 from src.screens.timer_screen import TimerScreen
-from src.entities.workout import Workout
+from src.screens.splash_screen import SplashScreen
 
 
 class Engine(object):
@@ -15,7 +16,7 @@ class Engine(object):
     def start(self):
         try:
             workout_list = os.listdir(WORKOUT_FILES)
-            intro_menu = MenuScreen("Interval Timer!", "Workout App", "Choose a workout:", workout_list)
+            intro_menu = MenuScreen("Interval Timer!", "Ready?", "Choose a workout:", workout_list)
             workout_filename = intro_menu.get_selection()
 
             selected_workout = Workout(workout_filename)
@@ -48,11 +49,12 @@ class Engine(object):
     def start_rounds(self, sequence):
         for round_num in range(sequence.time_configuration.rounds):
             # Show timed Round Preview.
-            self.start_timer("Round", str(round_num + 1), 3)
+            self.start_splash_screen("Round {} of {}".format(str(round_num + 1),
+                                                             sequence.time_configuration.rounds))
 
             # Start Exercises in Round.
             for exercise in sequence.exercises:
-                self.start_timer(exercise.name, "Get Ready", 5)
+                self.start_timer(exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Round Rest.
@@ -60,10 +62,12 @@ class Engine(object):
 
     def start_sets(self, sequence):
         for exercise in sequence.exercises:
-            # Show timed Exercise Preview.
-
             # Start Exercise Sets.
-            for _ in range(sequence.time_configuration.rounds):
+            for round_num in range(sequence.time_configuration.rounds):
+                self.start_splash_screen("{}: Set {} of {}".format(exercise.name,
+                                                                  str(round_num + 1),
+                                                                  sequence.time_configuration.rounds))
+                self.start_timer(exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Set Rest.
@@ -74,13 +78,18 @@ class Engine(object):
         self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "yellow")
         pass
 
-    def start_timer(self, heading, subheading, seconds, color="white"):
+    def start_timer(self, heading, subheading, seconds, border_color="white"):
         timer_screen = TimerScreen(heading, subheading)
         for second in reversed(range(seconds + 1)):
-            timer_screen.draw(second, color)
+            timer_screen.draw(second, border_color)
             time.sleep(1)
             if second == 0:
                 self.play_beep()
+
+    def start_splash_screen(self, text):
+        splash_screen = SplashScreen(text)
+        splash_screen.draw()
+        time.sleep(SPLASH_SCREEN_DURATION)
 
     def play_beep(self):
         sound = sa.WaveObject.from_wave_file('./audio/beep-1.wav')
@@ -110,4 +119,5 @@ class Engine(object):
         for exercise in sequence.exercises:
             print('\t' + exercise.name)
         print()
+
 

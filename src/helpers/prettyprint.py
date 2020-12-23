@@ -1,14 +1,10 @@
 from .formatter import *
 
 
-def pprint_heading(text, **kwargs):
+def pprint_heading(text, color, **kwargs):
     for line in format_heading(text, **kwargs):
-        print(line)
+        print(format_color(line, color))
 
-
-def pprint_subheading(text, **kwargs):
-    for line in format_heading(text, **kwargs):
-        print(line)
 
 def pprint_list(item_list):
     print(format_list(item_list))

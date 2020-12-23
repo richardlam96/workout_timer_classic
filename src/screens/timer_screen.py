@@ -8,6 +8,6 @@ class TimerScreen(Screen):
         super().__init__(heading, subheading, description)
 
     def draw(self, seconds, border_color="white"):
-        super().draw(border_color)
+        super().draw(border_color=border_color)
         pprint_time(seconds)
 
