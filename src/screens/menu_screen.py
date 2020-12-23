@@ -4,19 +4,14 @@ from .screen import Screen
 
 class MenuScreen(Screen):
 
-    def __init__(self, heading, description, options_list):
-        super().__init__(self, heading, description)
-        self.heading = heading
-        self.description = description
+    def __init__(self, heading, subheading, description, options_list):
+        super().__init__(heading, subheading, description)
         self.options_list = options_list
         self.current_selection = 0
-
         self.draw()
 
     def draw(self):
-        self.clear()
-        pprint_heading(self.heading, font="sub-zero")
-        print(self.description)
+        super().draw()
         pprint_menu_list(self.options_list, self.current_selection)
 
     def get_selection(self):

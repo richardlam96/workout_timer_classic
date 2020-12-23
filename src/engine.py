@@ -1,6 +1,9 @@
 import os
+import time
+import simpleaudio as sa
 from config import WORKOUT_FILES, ROUNDS_MODE, SETS_MODE
 from src.screens.menu_screen import MenuScreen
+from src.screens.timer_screen import TimerScreen
 from src.entities.workout import Workout
 
 
@@ -11,7 +14,7 @@ class Engine(object):
 
     def start(self):
         workout_list = os.listdir(WORKOUT_FILES)
-        intro_menu = MenuScreen("Interval Timer!", "My App", workout_list)
+        intro_menu = MenuScreen("Interval Timer!", "Workout App", "Choose a workout:", workout_list)
         workout_filename = intro_menu.get_selection()
 
         selected_workout = Workout(workout_filename)
@@ -44,7 +47,7 @@ class Engine(object):
                 self.start_exercise(exercise)
 
             # Start Round Rest.
-            self.start_timer("Round", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer("Round Rest", "Rest", sequence.time_configuration.round_rest)
 
     def start_sets(self, sequence):
         for exercise in sequence.exercises:
@@ -59,14 +62,21 @@ class Engine(object):
 
     def start_exercise(self, exercise):
         self.start_timer(exercise.name, "Work", exercise.time_configuration.work)
-        self.start_timer(exercise.name, "Rest", exercise.time_configuration.rest)
+        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest)
         pass
 
     def start_timer(self, heading, subheading, seconds):
-        # Temporary "screen"
-        print("{} - {} - {}".format(heading, subheading, seconds))
-        # for _ in seconds:
-        #     print(seconds)
+        timer_screen = TimerScreen(heading, subheading)
+        for second in reversed(range(seconds + 1)):
+            timer_screen.draw(second)
+            time.sleep(1)
+            if second == 0:
+                self.play_beep()
+
+    def play_beep(self):
+        sound = sa.WaveObject.from_wave_file('./audio/beep-1.wav')
+        sound.play()
+        sa.stop_all()
 
     def preview_workout(self, workout):
         print(workout.name)
