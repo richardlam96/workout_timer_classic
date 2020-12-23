@@ -89,7 +89,7 @@ class Engine(object):
                 self.play_beep()
 
     def start_splash_screen(self, text):
-        self.splash_screen.draw()
+        self.splash_screen.draw(text)
         time.sleep(SPLASH_SCREEN_DURATION)
 
     def play_beep(self):
