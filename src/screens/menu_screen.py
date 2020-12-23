@@ -24,20 +24,16 @@ class MenuScreen(Screen):
               .color(self.primary_color, current_selection_index, attrs=['reverse', 'blink'])
               .get_as_string())
 
-    def get_selection(self, options_list, current_selection_index=0):
-        while True:
-            key = input()
-            if key == 'j':
-                current_selection_index += 1
-                current_selection_index %= len(options_list)
-            if key == 'k':
-                current_selection_index -= 1
-                current_selection_index %= len(options_list)
-            elif key == '':
-                break
+    def get_selection(self, heading, options_list, current_selection_index=0):
+        selected_number = int(input("Choose workout: "))
+        index = selected_number - 1
 
-            # Redraw Screen and prompt input until valid Input.
-            self.draw(options_list, current_selection_index)
-            self.get_selection(options_list, current_selection_index)
+        while options_list[index] is None:
+            selected_number = input("Invalid number, try again: ").rstrip('\n')
 
-        return options_list[current_selection_index]
+        # Redraw screen with selection and ask to confirm.
+        self.draw(heading, options_list, selected_number - 1)
+        input("Press 'Enter' to continue...")
+
+        return options_list[index]
+

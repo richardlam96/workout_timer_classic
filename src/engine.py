@@ -23,7 +23,7 @@ class Engine(object):
         try:
             workout_list = os.listdir(WORKOUT_FILES)
             self.menu_screen.draw("Interval Timer", workout_list)
-            workout_filename = self.menu_screen.get_selection(workout_list)
+            workout_filename = self.menu_screen.get_selection("Interval Timer", workout_list)
 
             selected_workout = Workout(workout_filename)
             self.start_workout(selected_workout)
