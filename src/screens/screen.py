@@ -1,28 +1,44 @@
-from ..helpers.prettyprint import *
-import os
+import shutil
+from config import *
+from src.helpers.formatter import Formatter
 
 
 class Screen(object):
 
-    def __init__(self, heading, subheading, description=""):
-        self.heading = heading
-        self.subheading = subheading
-        self.description = description
+    def __init__(self,
+                 primary_font=PRIMARY_FONT,
+                 secondary_font=SECONDARY_FONT,
+                 primary_color=PRIMARY_COLOR,
+                 secondary_color=SECONDARY_COLOR):
+        self.primary_font = primary_font
+        self.secondary_font = secondary_font
+        self.primary_color = primary_color
+        self.secondary_color = secondary_color
 
-    def draw(self, heading_color="white", subheading_color="white", border_color="white"):
-        self.clear()
-        # Heading.
-        if self.heading is not None:
-            pprint_border("=", border_color, attrs=['reverse'])
-            pprint_heading(self.heading, heading_color, font="sub-zero")
-            pprint_border("=", border_color, attrs=['reverse'])
-            print()
+        self.formatter = Formatter()
 
-        if self.subheading is not None:
-            pprint_heading(self.subheading, subheading_color, font="graffiti")
+    def draw_heading(self, heading):
+        # Draw Heading.
+        print(self.formatter
+              .format_text_art(heading, font=self.primary_font)
+              .color(self.primary_color)
+              .center()
+              .get_as_string())
 
-        if self.description is not None:
-            pprint_center(self.description)
+    def draw_subheading(self, subheading):
+        print(self.formatter
+              .format_text_art(subheading, font=self.secondary_font)
+              .color(self.secondary_color)
+              .center()
+              .get_as_string())
+
+    def draw_border(self, border_char="="):
+        terminal_width = shutil.get_terminal_size().columns
+        border = [border_char * terminal_width]
+        print(self.formatter
+              .format_list(border)
+              .color(self.secondary_color, attrs=['reverse'])
+              .get_as_string())
 
     def clear(self):
         os.system('clear')

@@ -12,13 +12,19 @@ from src.screens.splash_screen import SplashScreen
 class Engine(object):
 
     def __init__(self):
-        pass
+        # Initialize Screen (template) instances to use.
+        self.screen = Screen()
+        self.menu_screen = MenuScreen()
+        self.splash_screen = SplashScreen()
+        self.timer_screen = TimerScreen()
+        self.work_screen = TimerScreen(WORK_COLOR)
+        self.rest_screen = TimerScreen(REST_COLOR)
 
     def start(self):
         try:
             workout_list = os.listdir(WORKOUT_FILES)
-            intro_menu = MenuScreen("Interval Timer!", "Ready?", "Choose a workout:", workout_list)
-            workout_filename = intro_menu.get_selection()
+            self.menu_screen.draw("Interval Timer", workout_list)
+            workout_filename = self.menu_screen.get_selection(workout_list)
 
             selected_workout = Workout(workout_filename)
             self.start_workout(selected_workout)
@@ -48,39 +54,37 @@ class Engine(object):
     def start_rounds(self, sequence):
         for round_num in range(sequence.time_configuration.rounds):
             # Show timed Round Preview.
-            self.start_splash_screen("Round {} of {}".format(str(round_num + 1),
-                                                             sequence.time_configuration.rounds))
+            self.splash_screen.draw("Round {} of {}".format(str(round_num + 1),
+                                                            sequence.time_configuration.rounds))
 
             # Start Exercises in Round.
             for exercise in sequence.exercises:
-                self.start_timer(exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
+                self.start_timer(self.timer_screen, exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Round Rest.
-            self.start_timer("Round Rest", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer(self.timer_screen, "Round Rest", "Rest", sequence.time_configuration.round_rest)
 
     def start_sets(self, sequence):
         for exercise in sequence.exercises:
             # Start Exercise Sets.
             for round_num in range(sequence.time_configuration.rounds):
-                self.start_splash_screen("{}: Set {} of {}".format(exercise.name,
+                self.splash_screen.draw("{}: Set {} of {}".format(exercise.name,
                                                                   str(round_num + 1),
                                                                   sequence.time_configuration.rounds))
-                self.start_timer(exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
+                self.start_timer(self.timer_screen, exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Set Rest.
-            self.start_timer("Set Rest", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer(self.timer_screen, "Set Rest", "Rest", sequence.time_configuration.round_rest)
 
     def start_exercise(self, exercise):
-        self.start_timer(exercise.name, "Work", exercise.time_configuration.work, "red")
-        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "yellow")
-        pass
+        self.start_timer(self.work_screen, exercise.name, "Work", exercise.time_configuration.work)
+        self.start_timer(self.rest_screen, "Exercise Rest", "Rest", exercise.time_configuration.rest)
 
-    def start_timer(self, heading, subheading, seconds, border_color="white"):
-        timer_screen = TimerScreen(heading, subheading)
+    def start_timer(self, screen, heading, subheading, seconds):
         for second in reversed(range(seconds + 1)):
-            timer_screen.draw(second, border_color)
+            screen.draw(heading, subheading, second)
             time.sleep(1)
             if second == 0:
                 self.play_beep()
@@ -98,13 +102,14 @@ class Engine(object):
     def preview_workout(self, workout):
         # Temporary Preview.
         workout_name = workout.name.replace('_', ' ').upper()
-        workout_preview = Screen(heading="Workout Preview", subheading=workout_name)
-        workout_preview.draw()
+        self.screen.clear()
+        self.screen.draw_heading("Workout Preview")
+        self.screen.draw_subheading(workout.name)
 
         print("Selected: " + workout.name.replace('_', ' ').upper())
 
         for sequence in workout.sequences:
-            self.show_sequence_info(sequence)
+            self.print_sequence_info(sequence)
 
         time.sleep(1)
         input("Press 'Enter' to continue...")
@@ -112,14 +117,15 @@ class Engine(object):
     def preview_sequence(self, sequence):
         # Temporary Preview.
         sequence_name = sequence.name.replace('_', ' ').upper()
-        sequence_preview = Screen(heading="Sequence Preview", subheading=sequence_name)
-        sequence_preview.draw()
-        self.show_sequence_info(sequence)
+        self.screen.clear()
+        self.screen.draw_heading("Sequence Preview")
+        self.screen.draw_subheading(sequence_name)
+        self.print_sequence_info(sequence)
 
         time.sleep(1)
         input("Press 'Enter' to continue...")
 
-    def show_sequence_info(self, sequence):
+    def print_sequence_info(self, sequence):
         sequence_name = sequence.name.replace('_', ' ').upper()
         print("Configuration: " + sequence_name)
         print('\tMode: ' + str(sequence.mode))

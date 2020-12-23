@@ -1,15 +1,19 @@
-from ..helpers.prettyprint import *
 from .screen import Screen
 
 
 class SplashScreen(Screen):
 
-    def __init__(self, subheading, description=""):
-        super().__init__(heading=None, subheading=subheading, description=description)
+    def __init__(self):
+        super().__init__()
 
-    def draw(self):
+    def draw(self, heading):
+        self.clear()
+
         # Print some empty lines for spacing.
         for _ in range(10):
             print('\n')
-        super().draw()
+
+        # Draw Heading.
+        self.draw_heading(heading)
+
 
