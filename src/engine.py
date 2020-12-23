@@ -3,6 +3,7 @@ import time
 import simpleaudio as sa
 from config import *
 from src.entities.workout import Workout
+from src.screens.screen import Screen
 from src.screens.menu_screen import MenuScreen
 from src.screens.timer_screen import TimerScreen
 from src.screens.splash_screen import SplashScreen
@@ -30,12 +31,10 @@ class Engine(object):
 
         # Show Workout Preview.
         self.preview_workout(workout)
-        input()
 
         for sequence in workout.sequences:
             # Show Sequence Preview (?).
             self.preview_sequence(sequence)
-            input()
 
             if sequence.mode == ROUNDS_MODE:
                 self.start_rounds(sequence)
@@ -98,16 +97,31 @@ class Engine(object):
 
     def preview_workout(self, workout):
         # Temporary Preview.
-        print("Selected: "+ workout.name.replace('_', ' ').upper())
-        print()
+        workout_name = workout.name.replace('_', ' ').upper()
+        workout_preview = Screen(heading="Workout Preview", subheading=workout_name)
+        workout_preview.draw()
+
+        print("Selected: " + workout.name.replace('_', ' ').upper())
 
         for sequence in workout.sequences:
-            self.preview_sequence(sequence)
+            self.show_sequence_info(sequence)
+
+        time.sleep(1)
+        input("Press 'Enter' to continue...")
 
     def preview_sequence(self, sequence):
         # Temporary Preview.
-        print("[[ " + sequence.name.replace('_', ' ').upper() + " ]]")
-        print("Configuration:")
+        sequence_name = sequence.name.replace('_', ' ').upper()
+        sequence_preview = Screen(heading="Sequence Preview", subheading=sequence_name)
+        sequence_preview.draw()
+        self.show_sequence_info(sequence)
+
+        time.sleep(1)
+        input("Press 'Enter' to continue...")
+
+    def show_sequence_info(self, sequence):
+        sequence_name = sequence.name.replace('_', ' ').upper()
+        print("Configuration: " + sequence_name)
         print('\tMode: ' + str(sequence.mode))
         print('\tWork: ' + str(sequence.time_configuration.work))
         print('\tRest: ' + str(sequence.time_configuration.rest))
