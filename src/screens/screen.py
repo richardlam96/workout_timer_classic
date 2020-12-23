@@ -17,7 +17,7 @@ class Screen(object):
         pprint_border("=", border_color, attrs=['reverse'])
         print()
 
-        pprint_subheading(self.subheading, font="sub-zero")
+        pprint_subheading(self.subheading, font="graffiti")
         pprint_center(self.description)
 
     def clear(self):

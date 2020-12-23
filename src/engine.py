@@ -46,11 +46,13 @@ class Engine(object):
                 exit()
 
     def start_rounds(self, sequence):
-        for _ in range(sequence.time_configuration.rounds):
+        for round_num in range(sequence.time_configuration.rounds):
             # Show timed Round Preview.
+            self.start_timer("Round", str(round_num + 1), 3)
 
             # Start Exercises in Round.
             for exercise in sequence.exercises:
+                self.start_timer(exercise.name, "Get Ready", 5)
                 self.start_exercise(exercise)
 
             # Start Round Rest.
@@ -72,7 +74,7 @@ class Engine(object):
         self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "yellow")
         pass
 
-    def start_timer(self, heading, subheading, seconds, color):
+    def start_timer(self, heading, subheading, seconds, color="white"):
         timer_screen = TimerScreen(heading, subheading)
         for second in reversed(range(seconds + 1)):
             timer_screen.draw(second, color)
@@ -87,18 +89,25 @@ class Engine(object):
 
     def preview_workout(self, workout):
         # Temporary Preview.
-        print(workout.name)
+        print("Selected: "+ workout.name.replace('_', ' ').upper())
+        print()
+
         for sequence in workout.sequences:
             self.preview_sequence(sequence)
 
     def preview_sequence(self, sequence):
         # Temporary Preview.
-        print(sequence.name)
-        print('\tMode' + str(sequence.mode))
-        print('\tWork' + str(sequence.time_configuration.work))
-        print('\tRest' + str(sequence.time_configuration.rest))
-        print('\tRounds' + str(sequence.time_configuration.rounds))
-        print('\tRound Rest' + str(sequence.time_configuration.round_rest))
+        print("[[ " + sequence.name.replace('_', ' ').upper() + " ]]")
+        print("Configuration:")
+        print('\tMode: ' + str(sequence.mode))
+        print('\tWork: ' + str(sequence.time_configuration.work))
+        print('\tRest: ' + str(sequence.time_configuration.rest))
+        print('\tRounds: ' + str(sequence.time_configuration.rounds))
+        print('\tRound Rest: ' + str(sequence.time_configuration.round_rest))
+
+        # Exercise List Preview.
+        print("Exercises:")
         for exercise in sequence.exercises:
             print('\t' + exercise.name)
+        print()
 
