@@ -6,7 +6,7 @@ class SplashScreen(Screen):
     def __init__(self):
         super().__init__()
 
-    def draw(self, heading):
+    def draw(self, subheading):
         self.clear()
 
         # Print some empty lines for spacing.
@@ -14,6 +14,6 @@ class SplashScreen(Screen):
             print('\n')
 
         # Draw Heading.
-        self.draw_heading(heading)
+        self.draw_subheading(subheading)
 
 
