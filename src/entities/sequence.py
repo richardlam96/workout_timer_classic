@@ -14,7 +14,7 @@ class Sequence(object):
         self._config_line = self._sequence_data[0].split()
 
         # Read filepath as name (better way later).
-        self.name = filename.split('.')[0]
+        self.name = filename.split('.')[0].replace('_', ' ').upper()
 
         # Read first line as the Time Configuration.
         self.mode = self._config_line[0]

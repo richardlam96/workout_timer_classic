@@ -9,7 +9,7 @@ class Workout(object):
 
         # Read filepath as name.
         self._filepath = WORKOUT_FILES + filename
-        self.name = filename.split('.')[0]
+        self.name = filename.split('.')[0].replace('_', ' ').upper()
 
         # Read file data as list of Sequence files.
         self.sequences = [Sequence(sequence_file) for sequence_file in read_list(self._filepath)]

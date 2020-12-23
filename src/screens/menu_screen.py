@@ -16,7 +16,7 @@ class MenuScreen(Screen):
         # pprint_menu_list(options_list, current_selection_index)
         self.draw_list(options_list, current_selection_index)
 
-    def draw_list(self, options_list, current_selection_index):
+    def draw_list(self, options_list, current_selection_index=0):
         print(self.formatter
               .format_list(options_list)
               .add_numbering()

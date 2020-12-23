@@ -40,6 +40,12 @@ class Screen(object):
               .color(self.secondary_color, attrs=['reverse'])
               .get_as_string())
 
+    def draw_list(self, options_list):
+        print(self.formatter
+              .format_list(options_list)
+              .center()
+              .get_as_string())
+
     def clear(self):
         os.system('clear')
 

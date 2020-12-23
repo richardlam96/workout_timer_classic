@@ -1,4 +1,3 @@
-import os
 import time
 import simpleaudio as sa
 from config import *
@@ -101,12 +100,9 @@ class Engine(object):
 
     def preview_workout(self, workout):
         # Temporary Preview.
-        workout_name = workout.name.replace('_', ' ').upper()
         self.screen.clear()
         self.screen.draw_heading("Workout Preview")
         self.screen.draw_subheading(workout.name)
-
-        print("Selected: " + workout.name.replace('_', ' ').upper())
 
         for sequence in workout.sequences:
             self.print_sequence_info(sequence)
@@ -116,28 +112,30 @@ class Engine(object):
 
     def preview_sequence(self, sequence):
         # Temporary Preview.
-        sequence_name = sequence.name.replace('_', ' ').upper()
         self.screen.clear()
         self.screen.draw_heading("Sequence Preview")
-        self.screen.draw_subheading(sequence_name)
+        self.screen.draw_subheading(sequence.name)
         self.print_sequence_info(sequence)
 
         time.sleep(1)
         input("Press 'Enter' to continue...")
 
     def print_sequence_info(self, sequence):
-        sequence_name = sequence.name.replace('_', ' ').upper()
-        print("Configuration: " + sequence_name)
-        print('\tMode: ' + str(sequence.mode))
-        print('\tWork: ' + str(sequence.time_configuration.work))
-        print('\tRest: ' + str(sequence.time_configuration.rest))
-        print('\tRounds: ' + str(sequence.time_configuration.rounds))
-        print('\tRound Rest: ' + str(sequence.time_configuration.round_rest))
+        summary_list = []
+        summary_list.append("Configuration: " + sequence.name)
+        summary_list.append('\tMode: ' + str(sequence.mode))
+        summary_list.append('\tWork: ' + str(sequence.time_configuration.work))
+        summary_list.append('\tRest: ' + str(sequence.time_configuration.rest))
+        summary_list.append('\tRounds: ' + str(sequence.time_configuration.rounds))
+        summary_list.append('\tRound Rest: ' + str(sequence.time_configuration.round_rest))
 
         # Exercise List Preview.
-        print("Exercises:")
+        summary_list.append("Exercises:")
         for exercise in sequence.exercises:
-            print('\t' + exercise.name)
-        print()
+            summary_list.append('\t' + exercise.name)
+        summary_list.append('\n')
+
+        self.screen.draw_border()
+        print(self.screen.formatter.format_list(summary_list).center().get_as_string())
 
 
