@@ -8,15 +8,16 @@ class Formatter(object):
     def __init__(self):
         self.text_list = []
 
-    def format_text(self, multiline_text, **kwargs):
-        self.text_list = multiline_text.split(**kwargs)
+    def format_text_art(self, text, **kwargs):
+        textart = text2art(text, **kwargs)
+        self.text_list = textart.split('\n')
         return self
 
     def format_list(self, text_list):
         self.text_list = text_list
         return self
 
-    def color_text(self, color, item_index=None, **kwargs):
+    def color(self, color, item_index=None, **kwargs):
         if item_index is None:
             self.text_list = [colored(line, color, **kwargs) for line in self.text_list]
         else:
@@ -49,9 +50,16 @@ class Formatter(object):
 
 
 def format_heading(text, **kwargs):
-    heading = text2art(text, **kwargs)
-    centered_heading = format_center(heading)
-    return [format_color(line, "cyan") for line in centered_heading]
+    formatter = Formatter()
+    return formatter\
+        .format_text_art(text, **kwargs)\
+        .color("cyan")\
+        .center()\
+        .get_as_list()
+
+    # heading = text2art(text, **kwargs)
+    # centered_heading = format_center(heading)
+    # return [format_color(line, "cyan") for line in centered_heading]
     # return join_to_string(centered_heading)
 
 
