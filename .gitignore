@@ -3,5 +3,3 @@ venv/
 .idea/
 */__pycache__/*
 *.pyc
-*workout_files/*
-*sequence_files/*
