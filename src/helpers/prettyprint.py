@@ -1,12 +1,9 @@
 from .formatter import *
 
 
-def pprint_heading(text, border_char="=", **kwargs):
-    pprint_border(border_char)
+def pprint_heading(text, **kwargs):
     for line in format_heading(text, **kwargs):
         print(line)
-    pprint_border(border_char)
-    print()
 
 
 def pprint_subheading(text, **kwargs):
@@ -26,10 +23,10 @@ def pprint_time(seconds):
     print(join_to_string(format_center(format_time(seconds))))
 
 
-def pprint_border(border_char):
+def pprint_border(border_char, color="white"):
     terminal_width = shutil.get_terminal_size().columns
     border = border_char * terminal_width
-    print(border)
+    print(format_color(border, color))
 
 
 def pprint_center(message):

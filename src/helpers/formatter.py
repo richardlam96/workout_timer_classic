@@ -6,8 +6,12 @@ from termcolor import colored
 def format_heading(text, **kwargs):
     heading = text2art(text, **kwargs)
     centered_heading = format_center(heading)
-    return [colored(line, "cyan") for line in centered_heading]
+    return [format_color(line, "cyan") for line in centered_heading]
     # return join_to_string(centered_heading)
+
+
+def format_color(text, color):
+    return colored(text, color)
 
 
 def format_time(seconds):

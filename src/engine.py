@@ -13,21 +13,28 @@ class Engine(object):
         pass
 
     def start(self):
-        workout_list = os.listdir(WORKOUT_FILES)
-        intro_menu = MenuScreen("Interval Timer!", "Workout App", "Choose a workout:", workout_list)
-        workout_filename = intro_menu.get_selection()
+        try:
+            workout_list = os.listdir(WORKOUT_FILES)
+            intro_menu = MenuScreen("Interval Timer!", "Workout App", "Choose a workout:", workout_list)
+            workout_filename = intro_menu.get_selection()
 
-        selected_workout = Workout(workout_filename)
-        self.start_workout(selected_workout)
+            selected_workout = Workout(workout_filename)
+            self.start_workout(selected_workout)
+        except KeyboardInterrupt:
+            print("Forced exit. Bye!")
+        finally:
+            print("Workout Completed. Nice!")
 
     def start_workout(self, workout):
 
         # Show Workout Preview.
         self.preview_workout(workout)
+        input()
 
         for sequence in workout.sequences:
             # Show Sequence Preview (?).
             self.preview_sequence(sequence)
+            input()
 
             if sequence.mode == ROUNDS_MODE:
                 self.start_rounds(sequence)
@@ -58,17 +65,17 @@ class Engine(object):
                 self.start_exercise(exercise)
 
             # Start Set Rest.
-            self.start_timer("Set", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer("Set Rest", "Rest", sequence.time_configuration.round_rest)
 
     def start_exercise(self, exercise):
-        self.start_timer(exercise.name, "Work", exercise.time_configuration.work)
-        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest)
+        self.start_timer(exercise.name, "Work", exercise.time_configuration.work, "red")
+        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "cyan")
         pass
 
-    def start_timer(self, heading, subheading, seconds):
+    def start_timer(self, heading, subheading, seconds, color):
         timer_screen = TimerScreen(heading, subheading)
         for second in reversed(range(seconds + 1)):
-            timer_screen.draw(second)
+            timer_screen.draw(second, color)
             time.sleep(1)
             if second == 0:
                 self.play_beep()
@@ -80,7 +87,8 @@ class Engine(object):
 
     def preview_workout(self, workout):
         print(workout.name)
-        input()
+        for sequence in workout.sequences:
+            self.preview_sequence(sequence)
 
     def preview_sequence(self, sequence):
         print(sequence.name)
@@ -89,5 +97,6 @@ class Engine(object):
         print('\tRest' + str(sequence.time_configuration.rest))
         print('\tRounds' + str(sequence.time_configuration.rounds))
         print('\tRound Rest' + str(sequence.time_configuration.round_rest))
-        input()
+        for exercise in sequence.exercises:
+            print('\t' + exercise.name)
 
