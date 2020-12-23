@@ -12,9 +12,9 @@ class Screen(object):
     def draw(self, border_color="white"):
         self.clear()
         # Heading.
-        pprint_border("=", border_color)
+        pprint_border("=", border_color, attrs=['reverse'])
         pprint_heading(self.heading, font="sub-zero")
-        pprint_border("=", border_color)
+        pprint_border("=", border_color, attrs=['reverse'])
         print()
 
         pprint_subheading(self.subheading, font="sub-zero")

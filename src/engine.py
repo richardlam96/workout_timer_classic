@@ -69,7 +69,7 @@ class Engine(object):
 
     def start_exercise(self, exercise):
         self.start_timer(exercise.name, "Work", exercise.time_configuration.work, "red")
-        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "cyan")
+        self.start_timer("Exercise Rest", "Rest", exercise.time_configuration.rest, "yellow")
         pass
 
     def start_timer(self, heading, subheading, seconds, color):
@@ -86,11 +86,13 @@ class Engine(object):
         sa.stop_all()
 
     def preview_workout(self, workout):
+        # Temporary Preview.
         print(workout.name)
         for sequence in workout.sequences:
             self.preview_sequence(sequence)
 
     def preview_sequence(self, sequence):
+        # Temporary Preview.
         print(sequence.name)
         print('\tMode' + str(sequence.mode))
         print('\tWork' + str(sequence.time_configuration.work))
