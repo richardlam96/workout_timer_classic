@@ -1,7 +1,6 @@
 from config import WORKOUT_FILES
-from .time_configuration import TimeConfiguration
-from .sequence import Sequence
-from ..helpers.filehelper import read_list
+from src.entities.sequence import Sequence
+from src.helpers.filehelper import read_list
 
 
 class Workout(object):

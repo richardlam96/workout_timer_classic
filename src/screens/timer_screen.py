@@ -1,5 +1,5 @@
-from .screen import Screen
 from config import TIMER_FONT
+from .screen import Screen
 
 
 class TimerScreen(Screen):

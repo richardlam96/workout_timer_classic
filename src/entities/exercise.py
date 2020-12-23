@@ -1,4 +1,3 @@
-from .time_configuration import TimeConfiguration
 
 
 class Exercise(object):

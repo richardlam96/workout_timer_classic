@@ -1,7 +1,7 @@
 from config import SEQUENCE_FILES
+from src.helpers.filehelper import read_list
 from .time_configuration import TimeConfiguration
 from .exercise import Exercise
-from ..helpers.filehelper import read_list
 
 
 class Sequence(object):
