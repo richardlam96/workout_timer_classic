@@ -1,0 +1,4 @@
+Sets 30 30 2 30
+Wide Pushup
+Narrow Pushup
+Leaning Pushup

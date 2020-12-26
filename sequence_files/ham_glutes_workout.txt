@@ -1,0 +1,7 @@
+Rounds 30 30 3 30
+SL Deadlift R
+SL Deadlift L
+SL Glute Bridge R
+SL Glute Bridge L
+Leg Raises R
+Leg Raises L
