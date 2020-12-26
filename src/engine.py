@@ -53,8 +53,8 @@ class Engine(object):
     def start_rounds(self, sequence):
         for round_num in range(sequence.time_configuration.rounds):
             # Show timed Round Preview.
-            self.splash_screen.draw("Round {} of {}".format(str(round_num + 1),
-                                                            sequence.time_configuration.rounds))
+            self.start_splash_screen("Round {} of {}".format(str(round_num + 1),
+                                                             sequence.time_configuration.rounds))
 
             # Start Exercises in Round.
             for exercise in sequence.exercises:
@@ -68,9 +68,9 @@ class Engine(object):
         for exercise in sequence.exercises:
             # Start Exercise Sets.
             for round_num in range(sequence.time_configuration.rounds):
-                self.splash_screen.draw("{}: Set {} of {}".format(exercise.name,
-                                                                  str(round_num + 1),
-                                                                  sequence.time_configuration.rounds))
+                self.start_splash_screen("{}: Set {} of {}".format(exercise.name,
+                                                                   str(round_num + 1),
+                                                                   sequence.time_configuration.rounds))
                 self.start_timer(self.timer_screen, exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
@@ -89,8 +89,7 @@ class Engine(object):
                 self.play_beep()
 
     def start_splash_screen(self, text):
-        splash_screen = SplashScreen(text)
-        splash_screen.draw()
+        self.splash_screen.draw(text)
         time.sleep(SPLASH_SCREEN_DURATION)
 
     def play_beep(self):
