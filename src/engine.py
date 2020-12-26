@@ -53,35 +53,37 @@ class Engine(object):
     def start_rounds(self, sequence):
         for round_num in range(sequence.time_configuration.rounds):
             # Show timed Round Preview.
-            self.start_splash_screen("Round {} of {}".format(str(round_num + 1),
+            self.start_splash_screen("ROUND {} of {}".format(str(round_num + 1),
                                                              sequence.time_configuration.rounds))
 
             # Start Exercises in Round.
             for exercise in sequence.exercises:
-                self.start_timer(self.timer_screen, exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
+                self.start_timer(self.timer_screen, exercise.name, "GET READY", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Round Rest.
-            self.start_timer(self.timer_screen, "Round Rest", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer(self.timer_screen, "Round Rest", "REST", sequence.time_configuration.round_rest)
 
     def start_sets(self, sequence):
         for exercise in sequence.exercises:
             # Start Exercise Sets.
             for round_num in range(sequence.time_configuration.rounds):
-                self.start_splash_screen("{}: Set {} of {}".format(exercise.name,
-                                                                   str(round_num + 1),
-                                                                   sequence.time_configuration.rounds))
-                self.start_timer(self.timer_screen, exercise.name, "Get Ready", GET_READY_SCREEN_DURATION)
+                self.start_splash_screen("SET {} of {}".format(str(round_num + 1),
+                                                               sequence.time_configuration.rounds))
+                self.start_timer(self.timer_screen, exercise.name, "GET READY", GET_READY_SCREEN_DURATION)
                 self.start_exercise(exercise)
 
             # Start Set Rest.
-            self.start_timer(self.timer_screen, "Set Rest", "Rest", sequence.time_configuration.round_rest)
+            self.start_timer(self.timer_screen, "Set Rest", "REST", sequence.time_configuration.round_rest)
 
     def start_exercise(self, exercise):
-        self.start_timer(self.work_screen, exercise.name, "Work", exercise.time_configuration.work)
-        self.start_timer(self.rest_screen, "Exercise Rest", "Rest", exercise.time_configuration.rest)
+        self.start_timer(self.work_screen, exercise.name, "WORK", exercise.time_configuration.work)
+        self.start_timer(self.rest_screen, "Exercise Rest", "REST", exercise.time_configuration.rest)
 
     def start_timer(self, screen, heading, subheading, seconds):
+        if seconds == 0:
+            return
+
         for second in reversed(range(seconds + 1)):
             screen.draw(heading, subheading, second)
             time.sleep(1)
