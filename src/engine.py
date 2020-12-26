@@ -21,7 +21,7 @@ class Engine(object):
 
     def start(self):
         try:
-            workout_list = os.listdir(WORKOUT_FILES)
+            workout_list = sorted(os.listdir(WORKOUT_FILES))
             self.menu_screen.draw("Interval Timer", workout_list)
             workout_filename = self.menu_screen.get_selection("Interval Timer", workout_list)
 
